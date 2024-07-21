@@ -1,0 +1,34 @@
+{
+    "manifest_version": 3,
+    "name": "AI Screenshot Remixer",
+    "version": "1.1",
+    "description": "Capture screenshots and send to Claude for remixing",
+    "permissions": [
+        "activeTab",
+        "scripting",
+        "tabs",
+        "storage"
+    ],
+    "host_permissions": [
+        "https://claude.ai/*",
+        "https://chatgpt.com/*",
+        "https://chat.openai.com/*"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": ["https://claude.ai/*", "https://chatgpt.com/*","http://*/*","https://*/*"],
+            "js": ["content.js"],
+            "run_at": "document_idle"
+        }
+    ],
+    
+    "options_page": "options.html",
+
+    "icons": {
+        "128": "icon128.png"
+    },
+    "action": {}
+}
