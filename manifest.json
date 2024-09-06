@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "AI Screenshot Remixer",
+    "name": "SnapMix AI: Screenshot Wizard",
     "version": "1.1",
-    "description": "Capture screenshots and send to Claude for remixing",
+    "description": "Capture screenshots and send to AI for recreation",
     "permissions": [
         "activeTab",
         "scripting",
@@ -15,7 +15,8 @@
         "https://chat.openai.com/*"
     ],
     "background": {
-        "service_worker": "background.js"
+        "service_worker": "background.js",
+        "type": "module"
     },
     "content_scripts": [
         {

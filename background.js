@@ -43,25 +43,6 @@ function waitForTabLoad(tabId) {
 
 async function injectContentScriptAndSendMessage(tabId, message) {
   try {
-    await chrome.scripting.executeScript({
-      target: { tabId: tabId },
-      files: ['content.js']
-    });
-    console.log('Content script injected successfully');
-
-    console.log('Sending message to content script');
-    const response = await chrome.tabs.sendMessage(tabId, message);
-    console.log('Message sent to content script, response:', response);
-    return response;
-  } catch (error) {
-    console.error('Error in injecting content script or sending message:', error);
-    throw error;
-  }
-}
-
-
-async function injectContentScriptAndSendMessage(tabId, message) {
-  try {
     // Check if the content script is already injected
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     const results = await chrome.tabs.sendMessage(tab.id, { action: 'ping' }).catch(() => {});
@@ -87,9 +68,7 @@ async function injectContentScriptAndSendMessage(tabId, message) {
   }
 }
 
-
-
-
+import { PROMPTS } from './prompts.js';
 
 chrome.action.onClicked.addListener(async (tab) => {
   try {
@@ -107,7 +86,7 @@ chrome.action.onClicked.addListener(async (tab) => {
     await waitForTabLoad(newTab.id);
     console.log(`${aiService} tab loaded`);
     
-    const prompt = `Hi! Please carefully examine the screenshot provided. Your primary task is to accurately recreate the artifact in the screenshot. Assume it is an interactive webpage (html). There's a 10% chance it's a pdf file, or an image. Once you have accurately reproduced it, assess if it looks complete. if not then fill the placeholder media with reference or random images. replace all the information that is concerning with parody or placeholder information. Respond if you understand. Concisely give me 2 recommendations for how to improve it.`;
+    const prompt = PROMPTS.default;
     
     const result = await injectContentScriptAndSendMessage(newTab.id, { 
       action: 'injectScreenshotAndPrompt',
